@@ -1,6 +1,7 @@
 /*PATH "C:\\TestingFileSys"*/
 
 // git controlled env
+// now in collaborative mode
 
 
 
