@@ -3,8 +3,6 @@
 // git controlled env
 // now in collaborative mode
 
-
-
 #include<iostream>
 #include<windows.h>
 #include<string>
@@ -13,6 +11,7 @@ using namespace std;
 class FileManagement{
     private:
     int x;
+    DWORD arr[10];
     string sPath;
     HANDLE hFile;
     HANDLE hProcess;
@@ -49,20 +48,98 @@ class FileManagement{
         CloseHandle(pi.hProcess);
     }
 
-    void DeleteFile()
+
+    bool deleteFile(const char* filePath)
     {
-        hFile = CreateFileA(
-            "Y:\test",
-            GENERIC_WRITE, 
-            0,
-            NULL,
-            OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL
+        // Attempt to delete the file
+        if (DeleteFileA(filePath))
+        {
+            return true;
+        }
+        else
+        {
+            // Get the last Win32 error code
+            DWORD errorCode = GetLastError();
+
+            if (errorCode == ERROR_FILE_NOT_FOUND)
+            {
+                // The file doesn't exist, so consider it deleted
+                cout << "Such a file doesn't exist in the system" << endl;
+                return true;
+            }
+            else
+            {
+                cout << "File could not be deleted" << endl;
+                // add error handling here to some extent
+                return false;
+            }
+        }
+    }
+
+    bool createFileBackup(const char* filePath)
+    {
+        // Get the current time
+        SYSTEMTIME currentTime;
+        GetSystemTime(&currentTime);
+
+        // Construct the backup file name by appending a timestamp to the original file name
+        char backupFilePath[MAX_PATH];
+        sprintf_s(backupFilePath, "%s.%04d%02d%02d%02d%02d%02d.bak",
+                filePath,
+                currentTime.wYear, currentTime.wMonth, currentTime.wDay,
+                currentTime.wHour, currentTime.wMinute, currentTime.wSecond);
+
+        // Attempt to copy the file to the backup file name
+        if (CopyFileA(filePath, backupFilePath, FALSE))
+        {
+            return true;
+        }
+        else
+        {
+            cout << "Failed to create backup" << endl;
+            // add error handling here again
+            return false;
+        }
+    }
 
 
-        );
-        BOOL DeleteFile(
-                    
-                    );
+    bool moveFileToFolder(const char* filePath, const char* destFolderPath)
+    {
+        // Construct the destination file path by appending the file name to the destination folder path
+        char destFilePath[MAX_PATH];
+        PathCombineA(destFilePath, destFolderPath, PathFindFileNameA(filePath));
+
+        // Attempt to move the file to the destination file path
+        if (MoveFileA(filePath, destFilePath))
+        {
+            return true;
+        }
+        else
+        {
+            cout << "Failed to move file" << endl;
+            // add error handling
+            return false;
+        }
+    }
+
+
+    bool copyFileToFolder(const char* filePath, const char* destFolderPath)
+    {
+        // Construct the destination file path by appending the file name to the destination folder path
+        char destFilePath[MAX_PATH];
+        PathCombineA(destFilePath, destFolderPath, PathFindFileNameA(filePath));
+
+        // Attempt to copy the file to the destination file path
+        if (CopyFileA(filePath, destFilePath, FALSE))
+        {
+            return true;
+        }
+        else
+        {
+            cout << "Failed to copy file" << endl;
+            // add error handling
+            return false;
+        }
     }
     
 };
