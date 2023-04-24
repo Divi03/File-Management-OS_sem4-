@@ -3,8 +3,8 @@
 // git controlled env
 // now in collaborative mode
 // define preprocessor macro to exclude rarely-used headers from windows.h
-#define WIN32_LEAN_AND_MEAN
 
+#define WIN32_LEAN_AND_MEAN
 // include necessary headers
 #include <windows.h> // for Windows API functions and types
 #include <iostream> // for input/output stream operations
@@ -69,7 +69,7 @@ class CFileManagement{
                 BOOL bCreateProcess;
 
                 // Using the CreateProcess() function to create a new process 
-                bCreateProcess = CreateProcess(
+                bCreateProcess = CreateProcessW(
                             wPath,      // Application path
                             NULL,       // Command line arguments
                             NULL,       // Process handle not inheritable
@@ -85,62 +85,62 @@ class CFileManagement{
                 CloseHandle(pi.hThread);
                 CloseHandle(pi.hProcess);
 
-            if (hFile)
-            {
-                cout << "\nSuccesfullt Opened the File";
-            }
-
-            else
-            {
-                DWORD dwErrorCode = GetLastError();
-                switch(dwErrorCode)
-                    {
-                        case ERROR_FILE_NOT_FOUND:
-                            // The specified file was not found.
-                            cout << "The specified file was not found." << endl;
-                            break;
-                        case ERROR_PATH_NOT_FOUND:
-                            // The specified path was not found.
-                            cout << "The specified path was not found." << endl;
-                            break;
-                        case ERROR_BAD_EXE_FORMAT:
-                            // The specified executable file is not a valid application for this operating system.
-                            cout << "The specified executable file is not a valid application for this operating system." << endl;
-                            break;
-                        case ERROR_ACCESS_DENIED:
-                            // The requested access to the file or directory is not allowed.
-                            cout << "The requested access to the file or directory is not allowed." << endl;
-                            break;
-                        case ERROR_INVALID_HANDLE:
-                            // The specified handle is invalid.
-                            cout << "The specified handle is invalid." << endl;
-                            break;
-                        case ERROR_NOT_ENOUGH_MEMORY:
-                            // Not enough memory is available to complete this operation.
-                            cout << "Not enough memory is available to complete this operation." << endl;
-                            break;
-                        case ERROR_INVALID_PARAMETER:
-                            // The parameter is incorrect.
-                            cout << "The parameter is incorrect." << endl;
-                            break;
-                        case ERROR_SHARING_VIOLATION:
-                            // The requested operation cannot be completed because the file is already in use.
-                            cout << "The requested operation cannot be completed because the file is already in use." << endl;
-                            break;
-                        case ERROR_FILE_EXISTS:
-                            // The file already exists.
-                            cout << "The file already exists." << endl;
-                            break;
-                        case ERROR_INVALID_NAME:
-                            // The filename, directory name, or volume label syntax is incorrect.
-                            cout << "The filename, directory name, or volume label syntax is incorrect." << endl;
-                            break;
-                        default:
-                            // An unknown error occurred.
-                            cout << "An unknown error occurred." << endl;
-                            break;
-                    }
+                if (hFile)
+                {
+                    cout << "\nSuccesfullt Opened the File";
                 }
+
+                else
+                {
+                    DWORD dwErrorCode = GetLastError();
+                    switch(dwErrorCode)
+                        {
+                            case ERROR_FILE_NOT_FOUND:
+                                // The specified file was not found.
+                                cout << "The specified file was not found." << endl;
+                                break;
+                            case ERROR_PATH_NOT_FOUND:
+                                // The specified path was not found.
+                                cout << "The specified path was not found." << endl;
+                                break;
+                            case ERROR_BAD_EXE_FORMAT:
+                                // The specified executable file is not a valid application for this operating system.
+                                cout << "The specified executable file is not a valid application for this operating system." << endl;
+                                break;
+                            case ERROR_ACCESS_DENIED:
+                                // The requested access to the file or directory is not allowed.
+                                cout << "The requested access to the file or directory is not allowed." << endl;
+                                break;
+                            case ERROR_INVALID_HANDLE:
+                                // The specified handle is invalid.
+                                cout << "The specified handle is invalid." << endl;
+                                break;
+                            case ERROR_NOT_ENOUGH_MEMORY:
+                                // Not enough memory is available to complete this operation.
+                                cout << "Not enough memory is available to complete this operation." << endl;
+                                break;
+                            case ERROR_INVALID_PARAMETER:
+                                // The parameter is incorrect.
+                                cout << "The parameter is incorrect." << endl;
+                                break;
+                            case ERROR_SHARING_VIOLATION:
+                                // The requested operation cannot be completed because the file is already in use.
+                                cout << "The requested operation cannot be completed because the file is already in use." << endl;
+                                break;
+                            case ERROR_FILE_EXISTS:
+                                // The file already exists.
+                                cout << "The file already exists." << endl;
+                                break;
+                            case ERROR_INVALID_NAME:
+                                // The filename, directory name, or volume label syntax is incorrect.
+                                cout << "The filename, directory name, or volume label syntax is incorrect." << endl;
+                                break;
+                            default:
+                                // An unknown error occurred.
+                                cout << "An unknown error occurred." << endl;
+                                break;
+                        }
+                    }
             }
 
             case 2:
@@ -265,6 +265,7 @@ class CFileManagement{
             }
         }
     }
+}
 
 
     bool bDeleteFile(const char* filePath)
@@ -357,7 +358,8 @@ class CFileManagement{
         {
             DWORD dwErrorCode = GetLastError();
 
-            switch (dwErrorCode) {
+            switch (dwErrorCode) 
+            {
                 case ERROR_FILE_NOT_FOUND:
                     cout << "The specified file was not found." << endl;
                     break;
@@ -381,11 +383,11 @@ class CFileManagement{
                     break;
             }
 
-    return 0;
-}
 
-        }
     }
+
+}
+    
 
 
     bool bCopyFileToFolder(const char* filePath, const char* destFolderPath)
@@ -534,7 +536,7 @@ int main()
             exit(1);
             break;
         case 1:
-            file.bOpen();
+            file.vOpen();
             break;
         case 2:
             cout <<"Enter File Path : ";
